@@ -35,7 +35,7 @@
     "test:integration": "bun test tests",
     "attw": "attw --pack --ignore-rules cjs-resolves-to-esm",
     "publint": "publint",
-    "prepack": "bun run build"
+    "prepare": "bun run build"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.4",

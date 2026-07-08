@@ -36,7 +36,7 @@ The `exports` map resolves per runtime:
 - `import` → `dist/index.js` with `dist/index.d.ts` types (Node.js and other bundlers).
 - `bun` → `src/index.ts` (Bun consumes the TypeScript source directly).
 
-`prepack` builds `dist/` before packaging. `files` publishes `dist/` and `src/`.
+`prepare` builds `dist/` on `npm install`/`bun install` of the package's own directory, and — per npm's documented convention for git dependencies — before the package is packed and installed when a consumer installs this repository directly via a git or `file:` reference. `dist/` is not committed to the repository; it is rebuilt at install time. `files` publishes `dist/` and `src/` if the package is ever packed for a registry.
 
 ## Development Commands
 
