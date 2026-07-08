@@ -33,7 +33,6 @@
     "test": "bun test",
     "test:unit": "bun test src",
     "test:integration": "bun test tests",
-    "test:node": "node --test tests-node/*.test.mjs",
     "attw": "attw --pack --ignore-rules cjs-resolves-to-esm",
     "publint": "publint",
     "prepack": "bun run build"

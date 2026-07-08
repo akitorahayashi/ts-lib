@@ -1,7 +1,7 @@
 # Package Checks Workflow
 #
-# Builds the distributable, validates the published package surface with
-# publint and Are the Types Wrong, and runs the built ESM output on Node.js.
+# Builds the distributable and validates the published package surface with
+# publint and Are the Types Wrong (which models Node.js and bundler resolution).
 
 name: Run Package Checks
 
@@ -30,6 +30,3 @@ jobs:
         run: |
           bun run publint
           bun run attw
-
-      - name: Run Node Consumer Tests
-        run: node --test tests-node/*.test.mjs

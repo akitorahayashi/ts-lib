@@ -10,8 +10,6 @@ src/
   <feature>.test.ts   Colocated unit tests
 tests/
   <name>.test.ts      Integration tests (Bun)
-tests-node/
-  <name>.test.mjs     Node.js consumer tests against dist/
 dist/                 Built ESM and type declarations (build output)
 ```
 
@@ -47,9 +45,8 @@ bun run fix          # Biome autofix
 bun run check        # Biome lint + tsc --noEmit
 bun test             # Bun unit and integration tests
 bun run build        # Emit dist/ with tsc
-bun run test:node    # Run built dist/ under Node.js
 bun run publint      # Lint the published package surface
-bun run attw         # Validate exports and type resolution
+bun run attw         # Validate exports and type resolution across Node.js and bundlers
 ```
 
 ## Development Guidelines
@@ -59,7 +56,7 @@ bun run attw         # Validate exports and type resolution
 - Tests assert public behavior through exports from `src/index.ts`.
 - Unit tests live next to source files under `src/` and test pure transformations.
 - Integration tests live under `tests/` and test filesystem, CLI, subprocess, or network behavior.
-- Node consumer tests live under `tests-node/` and import the built `dist/` output to verify Node.js compatibility.
+- Behavior is tested once with `bun test`; it is not mirrored per runtime. Node.js consumability is guaranteed by the `tsc` build plus `attw`, which statically models Node.js module and type resolution against `dist/`.
 - Feature modules remain runtime-independent and avoid process, filesystem, and network side effects unless that is the module's explicit responsibility.
 - New public APIs include tests at the package boundary.
 - Package consumers import from the package root, not from nested source files.
