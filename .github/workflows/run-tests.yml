@@ -1,0 +1,30 @@
+# Test Workflow
+#
+# Runs Bun tests.
+
+name: Run Tests
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  run-tests:
+    name: Run ${{ matrix.type }} Tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        type: [unit, integration]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup Development Environment
+        uses: ./.github/actions/setup
+
+      - name: Run ${{ matrix.type }} Tests
+        run: bun run test:${{ matrix.type }}
