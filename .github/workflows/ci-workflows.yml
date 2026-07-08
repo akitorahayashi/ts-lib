@@ -26,3 +26,7 @@ jobs:
   test:
     name: Test
     uses: ./.github/workflows/run-tests.yml
+
+  package-checks:
+    name: Package Checks
+    uses: ./.github/workflows/run-package-checks.yml

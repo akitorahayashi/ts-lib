@@ -1,13 +1,13 @@
 import { describe, expect, test } from 'bun:test';
-import { createSlug, SlugValidationError } from './index';
+import { createSlug, SlugValidationError } from './index.js';
 
 describe('createSlug', () => {
   test('normalizes text into a lowercase hyphenated slug', () => {
-    expect(createSlug(' Hello, Bun Library! ')).toBe('hello-bun-library');
+    expect(createSlug(' Hello, TS Library! ')).toBe('hello-ts-library');
   });
 
   test('supports underscore separators', () => {
-    expect(createSlug('Bun Library', { separator: '_' })).toBe('bun_library');
+    expect(createSlug('TS Library', { separator: '_' })).toBe('ts_library');
   });
 
   test('removes diacritics', () => {
@@ -15,8 +15,8 @@ describe('createSlug', () => {
   });
 
   test('limits output length without a trailing separator', () => {
-    expect(createSlug('Bun library template', { maxLength: 12 })).toBe(
-      'bun-library',
+    expect(createSlug('TS library template', { maxLength: 11 })).toBe(
+      'ts-library',
     );
   });
 
@@ -25,7 +25,7 @@ describe('createSlug', () => {
   });
 
   test('fails when maxLength is invalid', () => {
-    expect(() => createSlug('Bun', { maxLength: 0 })).toThrow(
+    expect(() => createSlug('TS', { maxLength: 0 })).toThrow(
       SlugValidationError,
     );
   });
