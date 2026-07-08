@@ -1,2 +1,2 @@
-export { BunLibError, SlugValidationError } from './errors';
-export { createSlug, type SlugOptions } from './slug';
+export { LibraryError, SlugValidationError } from './errors.js';
+export { createSlug, type SlugOptions } from './slug.js';

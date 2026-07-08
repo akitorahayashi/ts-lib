@@ -1,4 +1,4 @@
-import { SlugValidationError } from './errors';
+import { SlugValidationError } from './errors.js';
 
 export interface SlugOptions {
   maxLength?: number;

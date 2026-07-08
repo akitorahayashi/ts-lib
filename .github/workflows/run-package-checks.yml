@@ -1,0 +1,35 @@
+# Package Checks Workflow
+#
+# Builds the distributable, validates the published package surface with
+# publint and Are the Types Wrong, and runs the built ESM output on Node.js.
+
+name: Run Package Checks
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  run-package-checks:
+    name: Run Package Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup Development Environment
+        uses: ./.github/actions/setup
+
+      - name: Build Distributable
+        run: bun run build
+
+      - name: Validate Package Surface
+        run: |
+          bun run publint
+          bun run attw
+
+      - name: Run Node Consumer Tests
+        run: node --test tests-node/*.test.mjs

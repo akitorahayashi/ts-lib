@@ -9,7 +9,10 @@ src/
   <feature>.ts        Focused library feature modules
   <feature>.test.ts   Colocated unit tests
 tests/
-  <name>.test.ts      Integration tests
+  <name>.test.ts      Integration tests (Bun)
+tests-node/
+  <name>.test.mjs     Node.js consumer tests against dist/
+dist/                 Built ESM and type declarations (build output)
 ```
 
 ## Architecture
@@ -24,26 +27,42 @@ Feature modules expose small, typed APIs. Each module owns its validation rules 
 
 ### Errors
 
-`errors.ts` exports `BunLibError` as the shared library error base. Feature-specific errors extend `BunLibError`.
+`errors.ts` exports `LibraryError` as the shared library error base. Feature-specific errors extend `LibraryError`.
+
+## Distribution
+
+The package is developed with Bun and consumed on Node.js and Bun. `tsc` emits ESM JavaScript and `.d.ts` declarations to `dist/` from `tsconfig.build.json`.
+
+The `exports` map resolves per runtime:
+
+- `import` → `dist/index.js` with `dist/index.d.ts` types (Node.js and other bundlers).
+- `bun` → `src/index.ts` (Bun consumes the TypeScript source directly).
+
+`prepack` builds `dist/` before packaging. `files` publishes `dist/` and `src/`.
 
 ## Development Commands
 
 ```sh
-bun run fix      # Biome autofix
-bun run check    # Biome lint + tsc --noEmit
-bun test         # Run all tests
+bun run fix          # Biome autofix
+bun run check        # Biome lint + tsc --noEmit
+bun test             # Bun unit and integration tests
+bun run build        # Emit dist/ with tsc
+bun run test:node    # Run built dist/ under Node.js
+bun run publint      # Lint the published package surface
+bun run attw         # Validate exports and type resolution
 ```
 
 ## Development Guidelines
 
 - `bun run fix` runs before `bun run check`.
+- Relative imports within `src/` use explicit `.js` extensions so `tsc` emits Node-resolvable ESM. Bun and bundler type resolution map the `.js` specifier to the `.ts` source.
 - Tests assert public behavior through exports from `src/index.ts`.
 - Unit tests live next to source files under `src/` and test pure transformations.
 - Integration tests live under `tests/` and test filesystem, CLI, subprocess, or network behavior.
-- Feature modules remain framework-independent and avoid process, filesystem, and network side effects unless that is the module's explicit responsibility.
+- Node consumer tests live under `tests-node/` and import the built `dist/` output to verify Node.js compatibility.
+- Feature modules remain runtime-independent and avoid process, filesystem, and network side effects unless that is the module's explicit responsibility.
 - New public APIs include tests at the package boundary.
 - Package consumers import from the package root, not from nested source files.
-- The package is consumed as Bun-readable TypeScript from GitHub URL dependencies. No `dist/` build output is required.
 
 ## Documentation Rules
 
