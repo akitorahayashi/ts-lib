@@ -19,9 +19,9 @@ console.log(slug);
 
 ## Consumption
 
-The published package ships built ESM and type declarations under `dist/`, and includes `src/` for Bun consumers.
+The built `dist/` is committed so a git-reference consumer installs prebuilt ESM and type declarations without a build toolchain; `src/` is also shipped for Bun consumers.
 
-- Node.js resolves the `import` condition and loads `dist/index.js` with `dist/index.d.ts` types.
+- Node.js resolves the `default` condition and loads `dist/index.js` with `dist/index.d.ts` types.
 - Bun resolves the `bun` condition and loads the TypeScript source at `src/index.ts` directly.
 
 ## Development

@@ -33,10 +33,10 @@ The package is developed with Bun and consumed on Node.js and Bun. `tsc` emits E
 
 The `exports` map resolves per runtime:
 
-- `import` → `dist/index.js` with `dist/index.d.ts` types (Node.js and other bundlers).
+- `default` → `dist/index.js` with `dist/index.d.ts` types (Node.js, CommonJS, and bundlers).
 - `bun` → `src/index.ts` (Bun consumes the TypeScript source directly).
 
-`prepare` builds `dist/` on `npm install`/`bun install` of the package's own directory, and — per npm's documented convention for git dependencies — before the package is packed and installed when a consumer installs this repository directly via a git or `file:` reference. `dist/` is not committed to the repository; it is rebuilt at install time. `files` publishes `dist/` and `src/` if the package is ever packed for a registry.
+The built `dist/` is committed so a git-reference consumer installs prebuilt output with no build toolchain, avoiding an install-time build under the consumer's package manager. `run-package-checks` rebuilds `dist/` and fails when the committed output has drifted. `files` publishes `dist/` and `src/` if the package is ever packed for a registry.
 
 ## Development Commands
 
